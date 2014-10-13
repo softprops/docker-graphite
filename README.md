@@ -21,6 +21,11 @@ port  | use
 2004  | carban cache pickle interface
 7002  | carbon cache query port
 
+volumes
+
+volume                    | use
+--------------------------|-------------------------------
+/var/lib/graphite/storage | where graphite stores its data
 
 ```bash
 $ docker run \
