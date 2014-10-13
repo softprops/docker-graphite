@@ -19,6 +19,8 @@ port  | use
 80    | graphite web interface
 2003  | carbon cache line interface
 2004  | carban cache pickle interface
+2013  | carbon relay line interface
+2014  | carbon relay pickle interface
 7002  | carbon cache query port
 
 volumes
