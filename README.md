@@ -4,13 +4,13 @@ A [Graphite](http://graphite.readthedocs.org/en/latest/overview.html) installati
 
 ## usage
 
-build.
+### build
 
 ```bash
 $ docker build -t `whoami`/graphite .
 ```
 
-run.
+### run
 
 ports
 
@@ -37,7 +37,7 @@ $ docker run \
    `whoami`/graphite
 ```
 
-work it.
+### work it
 
 ```
 $ open "http://$(boot2docker ip 2>/dev/null)"
