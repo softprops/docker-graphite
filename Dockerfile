@@ -1,4 +1,5 @@
-FROM debian:wheezy
+FROM ubuntu:precise
+#FROM debian:wheezy
 
 MAINTAINER Doug Tangren <d.tangren@gmail.com>
 
@@ -14,7 +15,7 @@ RUN apt-get -y --force-yes \
             python-twisted python-django-tagging \
             python-simplejson python-memcache \
             python-pysqlite2 python-support python-pip \
-            gunicorn nginx-light --no-install-recommends
+            gunicorn nginx-light
 
 RUN pip install whisper
 
@@ -48,4 +49,4 @@ VOLUME /var/lib/graphite/storage
 
 CMD /bin/run
 
-RUN apt-get autoremove -y && apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
