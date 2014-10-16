@@ -1,4 +1,4 @@
-FROM ubuntu:precise
+FROM debian:wheezy
 
 MAINTAINER Doug Tangren <d.tangren@gmail.com>
 
@@ -48,4 +48,4 @@ VOLUME /var/lib/graphite/storage
 
 CMD /bin/run
 
-RUN apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get autoremove -y && apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
