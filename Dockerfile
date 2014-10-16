@@ -1,6 +1,6 @@
 FROM ubuntu:precise
 
-MAINTAINER Doug Tangren <d.tangre@gmail.com>
+MAINTAINER Doug Tangren <d.tangren@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -14,7 +14,7 @@ RUN apt-get -y --force-yes \
             python-twisted python-django-tagging \
             python-simplejson python-memcache \
             python-pysqlite2 python-support python-pip \
-            gunicorn nginx-light
+            gunicorn nginx-light --no-install-recommends
 
 RUN pip install whisper
 
@@ -48,4 +48,4 @@ VOLUME /var/lib/graphite/storage
 
 CMD /bin/run
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
