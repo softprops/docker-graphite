@@ -6,28 +6,28 @@ MAINTAINER Doug Tangren <d.tangren@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -y update && \
-    apt-get -y upgrade && \
-    apt-get -y dist-upgrade
+  apt-get -y upgrade && \
+  apt-get -y dist-upgrade
 
 RUN apt-get -y --force-yes \
-            install supervisor \
-            python-ldap python-cairo python-django \
-            python-twisted python-django-tagging \
-            python-simplejson python-memcache \
-            python-pysqlite2 python-support python-pip \
-            gunicorn nginx-light
+          install supervisor \
+          python-ldap python-cairo python-django \
+          python-twisted python-django-tagging \
+          python-simplejson python-memcache \
+          python-pysqlite2 python-support python-pip \
+          gunicorn nginx-light --no-install-recommends
 
-RUN pip install whisper
-
-RUN pip install \
-        --install-option="--prefix=/var/lib/graphite" \
-        --install-option="--install-lib=/var/lib/graphite/lib" \
-        carbon
+RUN pip install whisper==0.9.12
 
 RUN pip install \
-        --install-option="--prefix=/var/lib/graphite" \
-        --install-option="--install-lib=/var/lib/graphite/webapp" \
-        graphite-web
+      --install-option="--prefix=/var/lib/graphite" \
+      --install-option="--install-lib=/var/lib/graphite/lib" \
+      carbon==0.9.12
+
+RUN pip install \
+      --install-option="--prefix=/var/lib/graphite" \
+      --install-option="--install-lib=/var/lib/graphite/webapp" \
+      graphite-web==0.9.12
 
 RUN mkdir -p /var/log/supervisor
 
@@ -49,4 +49,4 @@ VOLUME /var/lib/graphite/storage
 
 CMD /bin/run
 
-RUN apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get autoremove -y && apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*
