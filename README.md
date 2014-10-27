@@ -45,4 +45,4 @@ $ docker run \
 $ open "http://$(boot2docker ip 2>/dev/null)"
 ```
 
-Doug Tangren (softprops) 2013
+Doug Tangren (softprops) 2014
