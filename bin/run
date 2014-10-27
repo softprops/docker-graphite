@@ -1,5 +1,21 @@
 #!/bin/bash
 
+OVERRIDES=/var/lib/graphite/overrides
+STORAGE_SCHEMAS=storage-schemas.conf
+DEFAULT_STORAGE_SCHEMAS=/var/lib/graphite/conf/storage-schemas.conf
+LOCAL_SETTINGS=local_settings.py
+DEFAULT_LOCAL_SETTINGS=/var/lib/graphite/webapp/graphite/local_settings.py
+
+if [[ -f "$OVERRIDES/$STORAGE_SCHEMAS" ]]; then
+  rm -f "$DEFAULT_STORAGE_SCHEMAS"
+  ln -s "$OVERRIDES/$STORAGE_SCHEMAS" "$DEFAULT_STORAGE_SCHEMAS"
+fi
+
+if [[ -f "$OVERRIDES/$LOCAL_SETTINGS" ]]; then
+  rm -f "$DEFAULT_LOCAL_SETTINGS"
+  ln -s "$OVERRIDES/$LOCAL_SETTINGS" "$DEFAULT_LOCAL_SETTINGS"
+fi
+
 CARBON_RELAY_DESTS=${CARBON_RELAY_DESTS:-127.0.0.1:2014}
 cat << EOF > /var/lib/graphite/conf/carbon.conf
 [cache]
@@ -38,9 +54,9 @@ touch /var/lib/graphite/storage/graphite.db \
       /var/lib/graphite/storage/index \
       /var/lib/graphite/storage/log/webapp/info.log
 
-chown -R www-data /var/lib/graphite/storage
 chmod 0775 /var/lib/graphite/storage /var/lib/graphite/storage/whisper
 chmod 0664 /var/lib/graphite/storage/graphite.db
+
 cd /var/lib/graphite/webapp/graphite && python manage.py syncdb --noinput
 
 /usr/bin/supervisord
