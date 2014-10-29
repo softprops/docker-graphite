@@ -5,31 +5,45 @@ MAINTAINER Doug Tangren <d.tangren@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# http://graphite.readthedocs.org/en/latest/install.html
+
 ENV GRAPHITE_VERSION 0.9.12
 
-RUN apt-get -y update && \
-    apt-get -y upgrade && \
-    apt-get -y dist-upgrade
+RUN apt-get -y update \
+    && apt-get -y upgrade \
+    && apt-get -y dist-upgrade \
+    && apt-get -y install \
+          build-essential \
+          supervisor \
+          python-ldap \
+          python-cairo \
+          python-django \
+          python-twisted \
+          python-django-tagging \
+          python-simplejson \
+          python-memcache \
+          python-pysqlite2 \
+          python-support \
+          python-pip \
+          gunicorn \
+          nginx-light \
+     && rm -rf /var/lib/apt/lists/* \
+     && apt-get autoremove -y
 
-RUN apt-get -y --force-yes \
-          install supervisor \
-          python-ldap python-cairo python-django \
-          python-twisted python-django-tagging \
-          python-simplejson python-memcache \
-          python-pysqlite2 python-support python-pip \
-          gunicorn nginx-light --no-install-recommends
-
+# whisper
 RUN pip install whisper==$GRAPHITE_VERSION
 
+# carbon
 RUN pip install \
-      --install-option="--prefix=/var/lib/graphite" \
-      --install-option="--install-lib=/var/lib/graphite/lib" \
-      carbon==$GRAPHITE_VERSION
+            --install-option="--prefix=/var/lib/graphite" \
+            --install-option="--install-lib=/var/lib/graphite/lib" \
+            carbon==$GRAPHITE_VERSION
 
+# graphite-web
 RUN pip install \
-      --install-option="--prefix=/var/lib/graphite" \
-      --install-option="--install-lib=/var/lib/graphite/webapp" \
-      graphite-web==$GRAPHITE_VERSION
+          --install-option="--prefix=/var/lib/graphite" \
+          --install-option="--install-lib=/var/lib/graphite/webapp" \
+          graphite-web==$GRAPHITE_VERSION
 
 RUN mkdir -p /var/log/supervisor
 
@@ -53,4 +67,4 @@ EXPOSE 80 2003 2004 2013 2014 7002
 
 CMD /bin/run
 
-RUN apt-get autoremove -y && apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*
+RUN apt-get clean &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*
